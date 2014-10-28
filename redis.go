@@ -9,6 +9,7 @@ func userExists(id string) bool {
 	if err != nil {
 		panic(err)
 	}
+	defer c.Close()
 
 	i, err := redis.Uint64(c.Do("HLEN", id))
 	if err != nil {
