@@ -8,6 +8,8 @@ import (
 
 func main() {
 	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/get_token", twitterGetTokenHandler)
+	http.HandleFunc("/callback", twitterCallbackHandler)
 
 	log.Println("start web server")
 	log.Fatal(http.ListenAndServe(":8000", context.ClearHandler(http.DefaultServeMux)))
