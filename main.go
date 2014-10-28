@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/get_token", twitterGetTokenHandler)
 	http.HandleFunc("/callback", twitterCallbackHandler)
 

@@ -9,7 +9,7 @@ import (
 
 var store = sessions.NewCookieStore([]byte("hogefugastring"))
 
-func indexHandler(w http.ResponseWriter, r *http.Request) {
+func rootHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("index")
 
 	session, err := store.Get(r, "twitter")
