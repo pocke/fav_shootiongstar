@@ -24,6 +24,8 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println("logined")
 	} else {
 		log.Println("login")
+		w.Header().Set("Pragma", "no-cache")
+		http.ServeFile(w, r, "views/signin.html")
 	}
 }
 
@@ -59,5 +61,6 @@ func twitterCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	session.Values["secret"] = accessToken.Secret
 	session.Save(r, w)
 
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	url := fmt.Sprintf("http://%s", r.Host)
+	http.Redirect(w, r, url, http.StatusSeeOther)
 }
