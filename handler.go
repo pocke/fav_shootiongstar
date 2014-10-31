@@ -10,6 +10,8 @@ import (
 
 var store = sessions.NewCookieStore([]byte("hogefugastring"))
 
+var root_template = template.Must(template.ParseFiles("views/main.html"))
+
 func rootHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("index")
 
@@ -21,8 +23,7 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 	_, ok_ := session.Values["token"].(string)
 	_, ok := session.Values["secret"].(string)
 
-	t := template.Must(template.ParseFiles("views/main.html"))
-	t.Execute(w, ok_ && ok)
+	root_template.Execute(w, ok_ && ok)
 }
 
 func twitterGetTokenHandler(w http.ResponseWriter, r *http.Request) {
