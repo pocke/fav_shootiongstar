@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/sessions"
+	"html/template"
 	"log"
 	"net/http"
 )
@@ -19,14 +20,9 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 
 	_, ok_ := session.Values["token"].(string)
 	_, ok := session.Values["secret"].(string)
-	// TODO
-	if ok_ && ok {
-		log.Println("logined")
-	} else {
-		log.Println("login")
-		w.Header().Set("Pragma", "no-cache")
-		http.ServeFile(w, r, "views/signin.html")
-	}
+
+	t := template.Must(template.ParseFiles("views/main.html"))
+	t.Execute(w, ok_ && ok)
 }
 
 func twitterGetTokenHandler(w http.ResponseWriter, r *http.Request) {
@@ -62,5 +58,15 @@ func twitterCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	session.Save(r, w)
 
 	url := fmt.Sprintf("http://%s", r.Host)
+	http.Redirect(w, r, url, http.StatusSeeOther)
+}
+
+func signoutHandler(w http.ResponseWriter, r *http.Request) {
+	session, _ := store.Get(r, "twitter")
+	delete(session.Values, "token")
+	delete(session.Values, "secret")
+	session.Save(r, w)
+
+	url := fmt.Sprintf("http://%s/", r.Host)
 	http.Redirect(w, r, url, http.StatusSeeOther)
 }
