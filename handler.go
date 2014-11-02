@@ -13,7 +13,7 @@ var store = sessions.NewCookieStore([]byte("hogefugastring"))
 var root_template = template.Must(template.ParseFiles("views/main.html"))
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
-	log.Println("index")
+	log.Println("root")
 
 	session, err := store.Get(r, "twitter")
 	if err != nil {
